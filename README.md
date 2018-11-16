@@ -11,6 +11,8 @@
 
 # dynamic_analysis
 cuckoo 샌드박스로 API 를 추출하여 머신러닝 모델을 설계하였다
+malware_feature와 software_featrue 는 암호로 잠겨있다.
+
 
 
 # static_analysis

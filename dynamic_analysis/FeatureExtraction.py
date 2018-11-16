@@ -2,13 +2,16 @@ import os
 import json
 import glob
 import pandas as pd
+import ast
+import matplotlib.pyplot as plt
 import csv
 import numpy as np
 
 
-'''
-cuckoo 로 추출된 json 파일에서 원하는 특징들을 추출함.
-'''
+os.chdir('D:\AI_challenge') #작업하고 있는 디렉토리 변경
+os.getcwd()
+os.listdir('./cuckoo_json_software')#현재 폴더의 파일들 목록
+
 class FeatureExtraction:
     '''
     json_file_path에 파일의 경로를 넣어야함
@@ -64,7 +67,7 @@ class FeatureExtraction:
     def get_md5(self,data):
         return data['target']['file']['md5']
 
-    '''
+        '''
     def make_csv(self,folder_name):#저장할 폴더 이름, py 위치에서 생성
         디렉토리 생성하는 try  except 문
         try:#없을경우 생성, 있을경우 그냥 넘어감.
@@ -75,7 +78,7 @@ class FeatureExtraction:
                 print("Failed to create directory!!!!!")
                 raise
         #make_dataframe()
-    '''
+        '''
     def pe_imports_dataframe(self):
         try:
             self.pe_imports
@@ -96,3 +99,49 @@ class FeatureExtraction:
             return pd.DataFrame(row_api_counts,dtype='int',columns = api_names, index=[self.md5])#데이터 프레임생성
         except Exception as e:
             return pd.DataFrame(index=[self.md5])#apistats가 비어있을 경우 index 만 추출
+
+
+
+
+'''
+apistats의 데이터프레임을 추출한뒤 csv파일로 저장 / 이건 일종의 순서쌍이지
+'''
+folder_path = './cuckoo_json_malware/' #추출할 폴더
+folder_path = './cuckoo_json_software/' #추출할 폴더
+df = pd.DataFrame()#저장할 데이터 프레임 생성
+for input_file in glob.glob(folder_path+'*'):#현재 폴더의 모든 파일이름 추출
+    feature = FeatureExtraction(input_file)
+    df = df.append(feature.apistats_dataframe,sort=True)
+df.to_csv("apistats.csv",mode='w')#csv 파일로 저장하기. mode a면 추가 쓰기
+
+
+'''
+pe_imports의 데이터프레임을 추출한뒤 csv파일로 저장
+'''
+folder_path = './cuckoo_json_software/' #추출할 폴더
+folder_path = './cuckoo_json_malware/' #추출할 폴더
+df = pd.DataFrame()#저장할 데이터 프레임 생성
+for input_file in glob.glob(folder_path+'*'):#현재 폴더의 모든 파일이름 추출
+    feature = FeatureExtraction(input_file)
+    df = df.append(feature.apistats_dataframe,sort=True)
+df.to_csv("pe_imports.csv",mode='w')#csv 파일로 저장하기.
+json_data = open(input_file).read()
+#csv 파일 만들기  /software_feature/filename.csv
+
+folder_path
+'''
+api 호출 순서대로 나열 된 리스트 파일
+만약 추출이 안된 [] 비어있는 리스트라면 저장 하지 않음.
+추후 Doc2Vec에 사용될 csv 파일들.
+'''
+folder_path = './cuckoo_json_malware/' #추출할 파일들을 가져오는폴더
+folder_path = './cuckoo_json_software/' #추출할 파일들을 가져오는 폴더
+f = open('behavior_api_order.csv', 'w', encoding='utf-8', newline='')
+for input_file in glob.glob(folder_path+'*'):#현재 폴더의 모든 파일이름 추출
+    feature = FeatureExtraction(input_file)
+    if len(feature.get_behavior_api_order) == 0:
+        continue
+    else:
+        wr = csv.writer(f)
+        wr.writerow(feature.get_behavior_api_order)
+f.close()
