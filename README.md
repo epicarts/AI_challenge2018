@@ -18,7 +18,7 @@
 ## static_analysis/
 - 위의 동적 분석을 이용하여 진행하고 있었으나, 대회시간 안에 동적분석을 못 끝낼 거 같아 대회진행 도중에 만들었다.
 - 파일 내의 유니코드 문자열을 추출하여 머신러닝 모델을 설계하였다.
-- ![string추출 소프트웨어](https://docs.microsoft.com/ko-kr/sysinternals/downloads/strings)
+- [string추출 소프트웨어](https://docs.microsoft.com/ko-kr/sysinternals/downloads/strings)
 
 
 ## tsne.ipynb
