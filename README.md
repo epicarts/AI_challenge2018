@@ -27,6 +27,8 @@
 ![tsne](https://user-images.githubusercontent.com/17478634/73534449-81018400-4464-11ea-8dfd-b14eac67eacf.png)
 - 악성코드 = 빨강색, 소프트웨어 = 파랑색으로 2차원에 표현하였다.
 
+
+
 ![api_tsne](https://user-images.githubusercontent.com/17478634/73534487-970f4480-4464-11ea-9296-b1b536613278.png)
 - API 관계를 2차원에 표현하였다.
 
